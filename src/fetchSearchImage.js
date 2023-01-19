@@ -1,4 +1,5 @@
 // Запит на бекенд fetch
+
 export function fetchSearchImage(page, searchQuery) {
     const API_URL = 'https://pixabay.com/api/';
     const KEY = '?key=32918808-7bed14219e5e11c2127636ebd';

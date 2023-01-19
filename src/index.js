@@ -1,6 +1,6 @@
-import './css/styles.css'
-import fetchSearchImage from "./fetchSearchImage";
-// import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import './css/styles.css';
+import { fetchSearchImage } from "./fetchSearchImage";
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 
 
@@ -12,9 +12,6 @@ const btnLoad = document.querySelector('.load-more');
 let page = 1;
 let perPage = 0;
 let searchQuery = '';
-
-
-
 
 
 // Пошук в search
@@ -36,20 +33,44 @@ function onSearch(event){
         console.log(imgSearchFeatch);
 
         if(imgSearchFeatch === []){
-          // notiflix.
-          alert('"Sorry, there are no images matching your search query. Please try again."');
+          Notify.warning('Sorry, there are no images matching your search query. Please try again.');
         };
 
         createCardImg(imgSearchFeatch.hits);
 
         btnLoad.hidden = false;
 
-    }).catch(err => console.log(err));
+    })
 };
+
+// при кліку загрузка ще контенту
+btnLoad.addEventListener('click', onButtonLoadMore);
+
+function onButtonLoadMore() {
+  page += 1;
+  
+  btnLoad.hidden = true;
+
+  fetchSearchImage(page, searchQuery).then(imgSearchFeatchMore => {
+
+    perPage += imgSearchFeatchMore.hits.length;
+
+    createCardImg(imgSearchFeatchMore.hits);
+
+    if (perPage >= imgSearchFeatchMore.totalHits) {
+      btnLoad.hidden = true;
+      Notify.info("We're sorry, but you've reached the end of search results.");
+    }
+
+    btnLoad.hidden = false;
+
+  })
+}
+
 
 
 // функція яка робить вертку картинки 
-function createCardImg(imgArr) {
+export function createCardImg(imgArr) {
   galleryList.innerHTML = imgArr.map(img => 
   `<div class="photo-card">
       <img src="${img.webformatURL}" alt="${img.tags}" loading="lazy" class="photo-img" />
@@ -70,36 +91,6 @@ function createCardImg(imgArr) {
   </div>`
   ).join('')
 };
-
-// при кліку загрузка ще контенту
-btnLoad.addEventListener('click', onButtonLoadMore);
-
-function onButtonLoadMore() {
-  page += 1;
-  
-  btnLoad.hidden = true;
-
-  fetchSearchImage(page, searchQuery).then(imgSearchFeatchMore => {
-
-    perPage += imgSearchFeatchMore.hits.length;
-
-    createCardImg(imgSearchFeatchMore.hits);
-
-    if (perPage >= imgSearchFeatchMore.totalHits) {
-      btnLoad.hidden = true;
-      // notiflix.
-    }
-
-    btnLoad.hidden = false;
-
-  }).catch(err => {
-    alert("We're sorry, but you've reached the end of search results.");
-    console.log(err)
-  });
-}
-
-
-
 
 
 
