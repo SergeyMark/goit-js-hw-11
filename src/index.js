@@ -12,6 +12,7 @@ const btnLoad = document.querySelector('.load-more');
 let page = 1;
 let perPage = 0;
 let searchQuery = '';
+const arr = [];
 
 formSearch.addEventListener('submit', onSearch);
 btnLoad.addEventListener('click', onButtonLoadMore);
@@ -32,38 +33,37 @@ function onSearch(event){
 
     fetchSearchImage(page, searchQuery).then(imgSearchFeatch => {
 
-        console.log(imgSearchFeatch);
+        console.log(imgSearchFeatch.hits);
 
-        if(imgSearchFeatch === []){
+        if(imgSearchFeatch.totalHits === 0){
           Notify.warning('Sorry, there are no images matching your search query. Please try again.');
+          btnLoad.hidden = true;
         };
 
-        createCardImg(imgSearchFeatch.hits);
+        if(imgSearchFeatch.totalHits) {
+          btnLoad.hidden = false;
+        }
 
-        btnLoad.hidden = false;
+        createCardImg(imgSearchFeatch.hits);
 
     })
 };
 
 // при кліку загрузка ще контенту
 
-function onButtonLoadMore() {
+function onButtonLoadMore() {  
   page += 1;
-  
-  btnLoad.hidden = true;
 
   fetchSearchImage(page, searchQuery).then(imgSearchFeatchMore => {
 
     perPage += imgSearchFeatchMore.hits.length;
 
-    createCardImg(imgSearchFeatchMore.hits);
-
-    if (perPage >= imgSearchFeatchMore.totalHits) {
-      btnLoad.hidden = true;
+    if (perPage === imgSearchFeatchMore.totalHits) {
       Notify.info("We're sorry, but you've reached the end of search results.");
+      btnLoad.hidden = true;
     }
 
-    btnLoad.hidden = false;
+    createCardImg(imgSearchFeatchMore.hits);
 
   })
 }
