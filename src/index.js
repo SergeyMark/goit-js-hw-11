@@ -13,9 +13,11 @@ let page = 1;
 let perPage = 0;
 let searchQuery = '';
 
+formSearch.addEventListener('submit', onSearch);
+btnLoad.addEventListener('click', onButtonLoadMore);
+
 
 // Пошук в search
-formSearch.addEventListener('submit', onSearch);
 
 function onSearch(event){ 
     event.preventDefault();
@@ -44,7 +46,6 @@ function onSearch(event){
 };
 
 // при кліку загрузка ще контенту
-btnLoad.addEventListener('click', onButtonLoadMore);
 
 function onButtonLoadMore() {
   page += 1;
