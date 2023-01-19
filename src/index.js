@@ -93,6 +93,7 @@ function onButtonLoadMore() {
   btnLoad.hidden = true;
 
   fetchSearchImage(page, searchQuery).then(imgSearchFeatchMore => {
+    
     perPage += imgSearchFeatchMore.hits.length;
 
     createCardImg(imgSearchFeatchMore.hits);
