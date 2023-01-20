@@ -10,9 +10,8 @@ const galleryList = document.querySelector('.gallery');
 const btnLoad = document.querySelector('.load-more');
 
 let page = 1;
-let perPage = 0;
 let searchQuery = '';
-const arr = [];
+let perPage = 40;
 
 formSearch.addEventListener('submit', onSearch);
 btnLoad.addEventListener('click', onButtonLoadMore);
@@ -38,9 +37,7 @@ function onSearch(event){
         if(imgSearchFeatch.totalHits === 0){
           Notify.warning('Sorry, there are no images matching your search query. Please try again.');
           btnLoad.hidden = true;
-        };
-
-        if(imgSearchFeatch.totalHits) {
+        }else{
           btnLoad.hidden = false;
         }
 
@@ -56,16 +53,16 @@ function onButtonLoadMore() {
 
   fetchSearchImage(page, searchQuery).then(imgSearchFeatchMore => {
 
-    perPage += imgSearchFeatchMore.hits.length;
-
-    if (perPage === imgSearchFeatchMore.totalHits) {
-      Notify.info("We're sorry, but you've reached the end of search results.");
-      btnLoad.hidden = true;
+    totalPages = imgSearchFeatchMore.totalHits / perPage;
+    
+    if (totalPages <= page) {
+        Notify.failure("We're sorry, but you've reached the end of search results");
+        btnLoad.hidden = true;
     }
 
     createCardImg(imgSearchFeatchMore.hits);
 
-  })
+  }).catch(err => console.log(err));
 }
 
 
@@ -102,7 +99,12 @@ export function createCardImg(imgArr) {
 
 
 
-
+// if (images.length < imgSearchFeatchMore.totalHits) {
+//   Notify.success(`Hooray! We found images.`);
+// } else {
+//   Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+//   btnLoad.hidden = true;
+// }
 
 
 
