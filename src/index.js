@@ -4,7 +4,6 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 
 
-
 const formSearch = document.querySelector('#search-form');
 const galleryList = document.querySelector('.gallery');
 const btnLoad = document.querySelector('.load-more');
@@ -90,21 +89,6 @@ export function createCardImg(imgArr) {
   ).join('')
 };
 
-
-
-
-
-
-
-
-
-
-// if (images.length < imgSearchFeatchMore.totalHits) {
-//   Notify.success(`Hooray! We found images.`);
-// } else {
-//   Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-//   btnLoad.hidden = true;
-// }
 
 
 
