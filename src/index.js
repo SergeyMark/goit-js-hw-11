@@ -15,6 +15,7 @@ let perPage = 40;
 formSearch.addEventListener('submit', onSearch);
 btnLoad.addEventListener('click', onButtonLoadMore);
 
+btnLoad.style.display = "none";
 
 // Пошук в search
 
@@ -35,9 +36,9 @@ function onSearch(event){
 
         if(imgSearchFeatch.totalHits === 0){
           Notify.warning('Sorry, there are no images matching your search query. Please try again.');
-          btnLoad.hidden = true;
+          btnLoad.style.display = "none";
         }else{
-          btnLoad.hidden = false;
+          btnLoad.style.display = "block";
         }
 
         createCardImg(imgSearchFeatch.hits);
@@ -56,7 +57,7 @@ function onButtonLoadMore() {
     
     if (totalPages <= page) {
         Notify.failure("We're sorry, but you've reached the end of search results");
-        btnLoad.hidden = true;
+        btnLoad.style.display = "none";
     }
 
     createCardImg(imgSearchFeatchMore.hits);
@@ -70,8 +71,9 @@ function onButtonLoadMore() {
 export function createCardImg(imgArr) {
   galleryList.innerHTML = imgArr.map(img => 
   `<div class="photo-card">
-      <img src="${img.webformatURL}" alt="${img.tags}" loading="lazy" class="photo-img" />
       <div class="info">
+      <img src="${img.webformatURL}" alt="${img.tags}" loading="lazy" class="photo-img" />
+      <div class="info-flex">
         <p class="info-item">
           <b>Likes: ${img.likes}</b>
         </p>
@@ -84,6 +86,7 @@ export function createCardImg(imgArr) {
         <p class="info-item">
           <b>Downloads: ${img.downloads}</b>
         </p>
+      </div>
       </div>
   </div>`
   ).join('')

@@ -71,9 +71,16 @@ img{
 
 .info{
   display: flex;
-  padding: 10px;
+  flex-direction: column;
 
-  border-top: 1px solid black;
+  height: 100%;
+}
+
+.info-flex{
+  display: flex;
+  justify-content: center;
+
+  padding: 5px;
 }
 
 .info-item{
@@ -85,7 +92,6 @@ img{
 }
 
 .load-more{
-  display: block;
   margin: 0 auto;
   margin-bottom: 15px;
   padding: 15px 20px;
