@@ -63,6 +63,7 @@ function onButtonLoadMore() {
     createCardImg(imgSearchFeatchMore.hits);
 
   }).catch(err => console.log(err));
+  
 }
 
 
