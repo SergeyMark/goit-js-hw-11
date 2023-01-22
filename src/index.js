@@ -57,7 +57,7 @@ function onButtonLoadMore() {
 
     console.log(imgSearchFeatchMore.totalHits);
 
-    totalPages = imgSearchFeatchMore.totalHits / perPage;
+    let totalPages = imgSearchFeatchMore.totalHits / perPage;
 
     console.log(perPage);
     console.log(totalPages);
