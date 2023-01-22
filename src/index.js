@@ -62,6 +62,8 @@ function onButtonLoadMore() {
         btnLoad.style.display = "none";
     }
 
+
+    
   }).catch(err => console.log(err));
 
 }
