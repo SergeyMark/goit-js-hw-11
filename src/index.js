@@ -53,6 +53,8 @@ function onButtonLoadMore() {
 
   fetchSearchImage(page, searchQuery).then(imgSearchFeatchMore => {
 
+    createCardImg(imgSearchFeatchMore.hits);
+
     totalPages = imgSearchFeatchMore.totalHits / perPage;
     
     if (totalPages <= page) {
@@ -60,10 +62,8 @@ function onButtonLoadMore() {
         btnLoad.style.display = "none";
     }
 
-    createCardImg(imgSearchFeatchMore.hits);
-
   }).catch(err => console.log(err));
-  
+
 }
 
 
