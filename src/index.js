@@ -22,7 +22,7 @@ btnLoad.style.display = "none";
 function onSearch(event){ 
     event.preventDefault();
 
-    searchQuery = event.currentTarget.searchQuery.value;
+    searchQuery = event.currentTarget.searchQuery.value.trim();
     page = 1;
 
     if(!searchQuery) {
@@ -63,7 +63,7 @@ function onButtonLoadMore() {
     }
 
 
-    
+
   }).catch(err => console.log(err));
 
 }
