@@ -32,6 +32,8 @@ function onSearch(event){
 
     fetchSearchImage(page, searchQuery).then(imgSearchFeatch => {
 
+      Notify.info(`Hooray! We found ${imgSearchFeatch.totalHits} images.`);
+
         console.log(imgSearchFeatch.hits);
 
         if(imgSearchFeatch.totalHits === 0){
