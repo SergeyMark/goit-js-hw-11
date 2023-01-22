@@ -55,14 +55,18 @@ function onButtonLoadMore() {
 
     createCardImg(imgSearchFeatchMore.hits);
 
+    console.log(imgSearchFeatchMore.totalHits);
+
     totalPages = imgSearchFeatchMore.totalHits / perPage;
+
+    console.log(perPage);
+    console.log(totalPages);
+    console.log(page);
     
-    if (totalPages <= page) {
+    if (page >= totalPages) {
         Notify.failure("We're sorry, but you've reached the end of search results");
         btnLoad.style.display = "none";
     }
-
-
 
   }).catch(err => console.log(err));
 
