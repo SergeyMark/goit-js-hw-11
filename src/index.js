@@ -34,8 +34,6 @@ function onSearch(event){
 
       Notify.info(`Hooray! We found ${imgSearchFeatch.totalHits} images.`);
 
-        console.log(imgSearchFeatch.hits);
-
         if(imgSearchFeatch.totalHits === 0){
           Notify.warning('Sorry, there are no images matching your search query. Please try again.');
           btnLoad.style.display = "none";
