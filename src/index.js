@@ -1,12 +1,16 @@
 import './css/styles.css';
 import { fetchSearchImage } from "./fetchSearchImage";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-
+// SimpleLightbox
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
 
 const formSearch = document.querySelector('#search-form');
 const galleryList = document.querySelector('.gallery');
 const btnLoad = document.querySelector('.load-more');
+
+const lightbox = new SimpleLightbox('.gallery a', {captionsData: 'alt', captionDelay: 250});
 
 let page = 1;
 let searchQuery = '';
@@ -30,20 +34,39 @@ async function onSearch(event){
         return;
     }
 
-    const serchResponse = await fetchSearchImage(page, searchQuery).then(imgSearchFeatch => {
+    try {
 
-      Notify.info(`Hooray! We found ${imgSearchFeatch.totalHits} images.`);
+      const serchResponse = await fetchSearchImage(page, searchQuery)
 
-        if(imgSearchFeatch.totalHits === 0){
-          Notify.warning('Sorry, there are no images matching your search query. Please try again.');
-          btnLoad.style.display = "none";
-        }else{
-          btnLoad.style.display = "block";
-        }
+      Notify.info(`Hooray! We found ${serchResponse.totalHits} images.`);
 
-        createCardImg(imgSearchFeatch.hits);
+      if(serchResponse.totalHits === 0){
+        Notify.warning('Sorry, there are no images matching your search query. Please try again.');
+        btnLoad.style.display = "none";
+      }else{
+        btnLoad.style.display = "block";
+      }
 
-    })
+      createCardImg(serchResponse.hits)
+
+      //  без try..catch
+
+      // .then(imgSearchFeatch => {
+      //   Notify.info(`Hooray! We found ${imgSearchFeatch.totalHits} images.`);
+      //     if(imgSearchFeatch.totalHits === 0){
+      //       Notify.warning('Sorry, there are no images matching your search query. Please try again.');
+      //       btnLoad.style.display = "none";
+      //     }else{
+      //       btnLoad.style.display = "block";
+      //     }
+      //     createCardImg(imgSearchFeatch.hits);
+      // })
+    } catch (error) {
+      console.log(error.message);
+    }
+
+    lightbox.refresh();
+   
 };
 
 // при кліку загрузка ще контенту
@@ -51,24 +74,37 @@ async function onSearch(event){
 async function onButtonLoadMore() {  
   page += 1;
 
-  const btnResponse = await fetchSearchImage(page, searchQuery).then(imgSearchFeatchMore => {
-
-    createCardImg(imgSearchFeatchMore.hits);
-
-    console.log(imgSearchFeatchMore.totalHits);
-
-    let totalPages = imgSearchFeatchMore.totalHits / perPage;
-
-    console.log(perPage);
-    console.log(totalPages);
-    console.log(page);
+  try {
+    const btnResponse = await fetchSearchImage(page, searchQuery);
     
+    createCardImg(btnResponse.hits);
+    
+    let totalPages = btnResponse.totalHits / perPage;
+
     if (page >= totalPages) {
         Notify.failure("We're sorry, but you've reached the end of search results");
         btnLoad.style.display = "none";
     }
+    
 
-  }).catch(err => console.log(err));
+    // без try..catch
+    // .then(imgSearchFeatchMore => {
+    //   createCardImg(imgSearchFeatchMore.hits);
+    //   console.log(imgSearchFeatchMore.totalHits);
+    //   let totalPages = imgSearchFeatchMore.totalHits / perPage;
+    //   console.log(perPage);
+    //   console.log(totalPages);
+    //   console.log(page);
+    //   if (page >= totalPages) {
+    //       Notify.failure("We're sorry, but you've reached the end of search results");
+    //       btnLoad.style.display = "none";
+    //   }
+  
+    // })
+    
+  } catch (error) {
+    console.log(error); 
+  }
 
 }
 
@@ -79,7 +115,9 @@ export function createCardImg(imgArr) {
   galleryList.innerHTML = imgArr.map(img => 
   `<div class="photo-card">
       <div class="info">
-      <img src="${img.webformatURL}" alt="${img.tags}" loading="lazy" class="photo-img" />
+      <a href="${img.largeImageURL}" alt="${img.tags}" >
+        <img src="${img.webformatURL}" alt="${img.tags}" loading="lazy" class="photo-img" />
+      </a>
       <div class="info-flex">
         <p class="info-item">
           <b>Likes: ${img.likes}</b>
