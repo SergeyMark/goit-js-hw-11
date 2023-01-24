@@ -36,7 +36,7 @@ async function onSearch(event){
 
     try {
 
-      const serchResponse = await fetchSearchImage(page, searchQuery)
+      const serchResponse = await fetchSearchImage(page, searchQuery);
 
       Notify.info(`Hooray! We found ${serchResponse.totalHits} images.`);
 
@@ -76,9 +76,7 @@ async function onButtonLoadMore() {
 
   try {
     const btnResponse = await fetchSearchImage(page, searchQuery);
-    
-    createCardImg(btnResponse.hits);
-    
+
     let totalPages = btnResponse.totalHits / perPage;
 
     if (page >= totalPages) {
@@ -86,15 +84,12 @@ async function onButtonLoadMore() {
         btnLoad.style.display = "none";
     }
     
+    createCardImg(btnResponse.hits);
 
     // без try..catch
     // .then(imgSearchFeatchMore => {
     //   createCardImg(imgSearchFeatchMore.hits);
-    //   console.log(imgSearchFeatchMore.totalHits);
     //   let totalPages = imgSearchFeatchMore.totalHits / perPage;
-    //   console.log(perPage);
-    //   console.log(totalPages);
-    //   console.log(page);
     //   if (page >= totalPages) {
     //       Notify.failure("We're sorry, but you've reached the end of search results");
     //       btnLoad.style.display = "none";
@@ -105,6 +100,9 @@ async function onButtonLoadMore() {
   } catch (error) {
     console.log(error); 
   }
+
+  lightbox.refresh();
+
 
 }
 
