@@ -19,7 +19,7 @@ btnLoad.style.display = "none";
 
 // Пошук в search
 
-function onSearch(event){ 
+async function onSearch(event){ 
     event.preventDefault();
 
     searchQuery = event.currentTarget.searchQuery.value.trim();
@@ -30,7 +30,7 @@ function onSearch(event){
         return;
     }
 
-    fetchSearchImage(page, searchQuery).then(imgSearchFeatch => {
+    const serchResponse = await fetchSearchImage(page, searchQuery).then(imgSearchFeatch => {
 
       Notify.info(`Hooray! We found ${imgSearchFeatch.totalHits} images.`);
 
@@ -48,10 +48,10 @@ function onSearch(event){
 
 // при кліку загрузка ще контенту
 
-function onButtonLoadMore() {  
+async function onButtonLoadMore() {  
   page += 1;
 
-  fetchSearchImage(page, searchQuery).then(imgSearchFeatchMore => {
+  const btnResponse = await fetchSearchImage(page, searchQuery).then(imgSearchFeatchMore => {
 
     createCardImg(imgSearchFeatchMore.hits);
 
