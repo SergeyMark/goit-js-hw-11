@@ -10,6 +10,8 @@ const formSearch = document.querySelector('#search-form');
 const galleryList = document.querySelector('.gallery');
 const btnLoad = document.querySelector('.load-more');
 
+
+
 const lightbox = new SimpleLightbox('.gallery a', {captionsData: 'alt', captionDelay: 250});
 
 let page = 1;
@@ -86,6 +88,8 @@ async function onButtonLoadMore() {
     
     createCardImg(btnResponse.hits);
 
+    onScroll();
+
     // без try..catch
     // .then(imgSearchFeatchMore => {
     //   createCardImg(imgSearchFeatchMore.hits);
@@ -102,8 +106,16 @@ async function onButtonLoadMore() {
   }
 
   lightbox.refresh();
+}
 
+// функція скрол
+function onScroll() {
+  const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
 
+    window.scrollBy({
+      top: cardHeight * 2,
+      behavior: "smooth",
+    });
 }
 
 
@@ -134,6 +146,8 @@ export function createCardImg(imgArr) {
   </div>`
   ).join('')
 };
+
+
 
 
 
