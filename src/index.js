@@ -77,18 +77,50 @@ async function onButtonLoadMore() {
   page += 1;
 
   try {
-    const btnResponse = await fetchSearchImage(page, searchQuery);
+    await fetchSearchImage(page, searchQuery).then(imgSearchFeatchMore => {
 
-    let totalPages = btnResponse.totalHits / perPage;
+        let totalPages = imgSearchFeatchMore.totalHits / perPage;
+        if (page >= totalPages) {
+            Notify.failure("We're sorry, but you've reached the end of search results");
+            btnLoad.style.display = "none";
+        }
 
-    if (page >= totalPages) {
-        Notify.failure("We're sorry, but you've reached the end of search results");
-        btnLoad.style.display = "none";
-    }
+      createCardImg(imgSearchFeatchMore.hits);
+
+      const { height: cardHeight } = galleryList.firstElementChild.getBoundingClientRect();
+
+      window.scrollBy({
+        top: cardHeight * 2,
+        behavior: "smooth",
+      });
+
+    })
+      } catch (error) {
+        console.log(error); 
+      }
     
-    createCardImg(btnResponse.hits);
+      lightbox.refresh();
+}
+    
 
-    onScroll();
+  // try {
+  //   const btnResponse = await fetchSearchImage(page, searchQuery);
+
+  //   let totalPages = btnResponse.totalHits / perPage;
+
+  //   if (page >= totalPages) {
+  //       Notify.failure("We're sorry, but you've reached the end of search results");
+  //       btnLoad.style.display = "none";
+  //   }
+    
+  //   createCardImg(btnResponse.hits);
+
+  //   const { height: cardHeight } = galleryList.firstElementChild.getBoundingClientRect();
+
+  //   window.scrollBy({
+  //     top: cardHeight * 2,
+  //     behavior: "smooth",
+  //   });
 
     // без try..catch
     // .then(imgSearchFeatchMore => {
@@ -101,22 +133,12 @@ async function onButtonLoadMore() {
   
     // })
     
-  } catch (error) {
-    console.log(error); 
-  }
-
-  lightbox.refresh();
-}
+ 
 
 // функція скрол
-function onScroll() {
-  const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
-
-    window.scrollBy({
-      top: cardHeight * 2,
-      behavior: "smooth",
-    });
-}
+// function onScroll() {
+  
+// }
 
 
 
@@ -145,6 +167,9 @@ export function createCardImg(imgArr) {
       </div>
   </div>`
   ).join('')
+
+
+  
 };
 
 
