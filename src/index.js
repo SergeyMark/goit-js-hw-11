@@ -10,8 +10,6 @@ const formSearch = document.querySelector('#search-form');
 const galleryList = document.querySelector('.gallery');
 const btnLoad = document.querySelector('.load-more');
 
-
-
 const lightbox = new SimpleLightbox('.gallery a', {captionsData: 'alt', captionDelay: 250});
 
 let page = 1;
@@ -87,7 +85,7 @@ async function onButtonLoadMore() {
 
       createCardImg(imgSearchFeatchMore.hits);
 
-      const { height: cardHeight } = galleryList.firstElementChild.getBoundingClientRect();
+      const { height: cardHeight } = document.querySelector('.gallery').firstElementChild.getBoundingClientRect();
 
       window.scrollBy({
         top: cardHeight * 2,
